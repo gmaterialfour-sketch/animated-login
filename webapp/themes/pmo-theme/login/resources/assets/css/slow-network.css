@@ -1,0 +1,35 @@
+body.slow-network .background-video,
+body.slow-network .three-scene {
+  display: none;
+}
+
+body.slow-network .background-poster {
+  background-image:
+    linear-gradient(rgba(2, 6, 23, 0.2), rgba(2, 6, 23, 0.38)),
+    url("../images/login-reference.png");
+}
+
+body.slow-network .background-shade {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+body.slow-network .access-icon,
+body.slow-network .access-icon::after,
+body.slow-network .security-note span,
+body.slow-network .pmo-card,
+body.slow-network .intro-panel,
+body.slow-network .loader-mark {
+  animation: none;
+}
+
+body.slow-network .pmo-card,
+body.slow-network .input-shell,
+body.slow-network .card-icon {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+body.slow-network .loading-overlay {
+  transition-duration: 120ms;
+}

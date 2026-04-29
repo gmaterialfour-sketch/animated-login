@@ -65,6 +65,7 @@ body {
   width: 100%;
   min-height: 100%;
   margin: 0;
+  overflow-x: clip;
 }
 
 body {
@@ -964,7 +965,8 @@ button[type="submit"]:active {
     grid-template-columns: 1fr;
     place-items: center;
     gap: 14px;
-    padding: 86px 22px 20px;
+    min-height: 100svh;
+    padding: 82px 22px 18px;
     text-align: center;
   }
 
@@ -1000,7 +1002,7 @@ button[type="submit"]:active {
   }
 
   .intro-panel h1 {
-    font-size: clamp(24px, 7.5cqw, 34px);
+    font-size: clamp(24px, 7cqw, 32px);
   }
 
   .intro-panel p {
@@ -1018,7 +1020,7 @@ button[type="submit"]:active {
 
   .pmo-card {
     max-width: 390px;
-    padding: 22px 22px 20px;
+    padding: 20px 20px 18px;
   }
 
   .three-scene {
@@ -1029,12 +1031,13 @@ button[type="submit"]:active {
 @media (max-width: 720px) {
   .pmo-login {
     min-height: 100svh;
-    padding: 76px 18px 14px;
+    gap: 10px;
+    padding: 72px 16px 12px;
   }
 
   .brand-bar {
-    left: 22px;
-    right: 22px;
+    left: 16px;
+    right: 16px;
   }
 
   .jakson-logo {
@@ -1046,15 +1049,15 @@ button[type="submit"]:active {
   }
 
   .pmo-card {
-    padding: 20px 16px 18px;
+    padding: 18px 16px 16px;
     border-radius: 20px;
     max-width: 100%;
   }
 
   .card-icon {
-    width: 36px;
-    height: 36px;
-    margin-bottom: 10px;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 8px;
   }
 
   .pmo-card h2 {
@@ -1062,12 +1065,12 @@ button[type="submit"]:active {
   }
 
   .login-subtitle {
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     font-size: 14px;
   }
 
   .field-group {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .input-shell {
@@ -1083,7 +1086,7 @@ button[type="submit"]:active {
   .form-row {
     align-items: center;
     gap: 14px;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
   button[type="submit"] {
@@ -1091,7 +1094,7 @@ button[type="submit"]:active {
   }
 
   .security-note {
-    margin-top: 16px;
+    margin-top: 14px;
     gap: 12px;
   }
 }
@@ -1114,12 +1117,43 @@ button[type="submit"]:active {
     padding-inline: 16px;
   }
 
+  .intro-panel h1,
   .intro-panel p {
     display: none;
   }
 
   .form-row {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 430px) and (max-height: 740px) {
+  .pmo-login {
+    padding-top: 66px;
+  }
+
+  .card-icon {
+    display: none;
+  }
+
+  .pmo-card h2 {
+    font-size: 25px;
+  }
+
+  .input-shell {
+    min-height: 44px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    height: 42px;
+  }
+}
+
+@supports not (overflow: clip) {
+  html,
+  body {
+    overflow-x: hidden;
   }
 }

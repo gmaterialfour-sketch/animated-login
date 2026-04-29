@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  initNetworkMode();
   initFormEnhancements();
   initBackgroundMode();
   revealWhenReady();
@@ -6,7 +7,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function shouldUseLiteMode() {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  return reducedMotion;
+  return reducedMotion || isSlowNetwork();
+}
+
+function isSlowNetwork() {
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!connection) {
+    return false;
+  }
+
+  const slowTypes = ["slow-2g", "2g", "3g"];
+  return Boolean(
+    connection.saveData ||
+    slowTypes.includes(connection.effectiveType) ||
+    connection.downlink && connection.downlink < 1.5 ||
+    connection.rtt && connection.rtt > 700
+  );
+}
+
+function initNetworkMode() {
+  if (!isSlowNetwork()) {
+    return;
+  }
+
+  document.body.classList.add("slow-network");
+
+  const href = new URL("../css/slow-network.css", import.meta.url).href;
+  if (!document.querySelector(`link[href="${href}"]`)) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = href;
+    document.head.append(link);
+  }
 }
 
 async function initBackgroundMode() {
