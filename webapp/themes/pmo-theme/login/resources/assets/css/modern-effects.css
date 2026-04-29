@@ -57,6 +57,7 @@
   --card-width: 420px;
   --control-height: 52px;
   --brand-logo-height: clamp(50px, 3.6vw, 74px);
+  --page-max-width: 1720px;
 }
 
 * {
@@ -87,7 +88,9 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 0.96fr) minmax(380px, 520px);
   align-items: center;
+  width: min(100%, var(--page-max-width));
   min-height: 100vh;
+  margin-inline: auto;
   overflow: hidden;
   gap: clamp(20px, 2.8vw, 44px);
   padding: clamp(40px, 5vw, 76px) clamp(42px, 6.6vw, 128px);
@@ -742,7 +745,7 @@ button[type="submit"]:active {
   }
 }
 
-@media (min-width: 1200px) and (max-height: 820px) {
+@media (min-width: 1200px) and (max-width: 1799px) and (max-height: 820px) {
   .pmo-login {
     grid-template-columns: minmax(0, 0.96fr) minmax(380px, 500px);
     gap: 20px;
@@ -825,7 +828,7 @@ button[type="submit"]:active {
   }
 }
 
-@media (min-width: 921px) and (max-height: 690px) {
+@media (min-width: 921px) and (max-width: 1799px) and (max-height: 690px) {
   :root {
     --brand-logo-height: 42px;
   }
@@ -955,24 +958,36 @@ button[type="submit"]:active {
 
 @media (min-width: 1800px) {
   :root {
-    --card-width: 480px;
-    --control-height: 60px;
-    --brand-logo-height: clamp(72px, 3.4vw, 92px);
+    --card-width: 500px;
+    --control-height: 62px;
+    --brand-logo-height: clamp(70px, 3vw, 86px);
+    --page-max-width: 1680px;
   }
 
   .pmo-login {
-    grid-template-columns: minmax(0, 1fr) minmax(440px, 560px);
-    gap: clamp(48px, 4.4vw, 96px);
+    grid-template-columns: minmax(620px, 760px) minmax(460px, 540px);
+    gap: clamp(64px, 5vw, 120px);
+    padding-top: clamp(72px, 5vh, 96px);
+    padding-bottom: clamp(52px, 5vh, 86px);
+    padding-left: clamp(76px, 5vw, 112px);
+    padding-right: clamp(76px, 5vw, 112px);
+  }
+
+  .brand-bar {
+    top: clamp(34px, 3.6vh, 56px);
+    left: clamp(76px, 5vw, 112px);
+    right: clamp(76px, 5vw, 112px);
   }
 
   .intro-panel {
-    width: min(100%, 760px);
+    width: min(100%, 720px);
+    padding-top: 0;
   }
 
   .access-title {
-    gap: 24px;
-    margin-bottom: 34px;
-    font-size: clamp(24px, 1.2vw, 32px);
+    gap: 22px;
+    margin-bottom: 30px;
+    font-size: clamp(22px, 1.05vw, 28px);
   }
 
   .access-icon {
@@ -987,20 +1002,20 @@ button[type="submit"]:active {
   }
 
   .intro-panel h1 {
-    font-size: clamp(58px, 4vw, 76px);
+    font-size: clamp(56px, 3.3vw, 72px);
   }
 
   .intro-panel p {
-    max-width: 690px;
-    font-size: 20px;
+    max-width: 640px;
+    font-size: 18px;
   }
 
   .pmo-card {
-    padding: 36px 44px 34px;
+    padding: 34px 42px 32px;
   }
 
   .pmo-card h2 {
-    font-size: 52px;
+    font-size: 50px;
   }
 
   .login-subtitle {
