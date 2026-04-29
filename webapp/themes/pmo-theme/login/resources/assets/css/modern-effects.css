@@ -56,6 +56,7 @@
   --tw-ring-blue: rgba(59, 130, 246, 0.24);
   --card-width: 420px;
   --control-height: 52px;
+  --brand-logo-height: clamp(50px, 3.6vw, 74px);
 }
 
 * {
@@ -89,7 +90,7 @@ body {
   min-height: 100vh;
   overflow: hidden;
   gap: clamp(20px, 2.8vw, 44px);
-  padding: clamp(40px, 5vw, 76px) clamp(30px, 4.4vw, 76px);
+  padding: clamp(40px, 5vw, 76px) clamp(42px, 6.6vw, 128px);
   isolation: isolate;
 }
 
@@ -203,16 +204,16 @@ body {
 }
 
 .jakson-logo {
-  width: clamp(126px, 9.4vw, 169px);
-  max-height: 58px;
-  height: auto;
+  width: auto;
+  height: var(--brand-logo-height);
+  max-width: min(24vw, 260px);
   object-fit: contain;
 }
 
 .energix-logo {
-  width: clamp(150px, 11.2vw, 202px);
-  max-height: 58px;
-  height: auto;
+  width: auto;
+  height: var(--brand-logo-height);
+  max-width: min(24vw, 260px);
   object-fit: contain;
 }
 
@@ -254,8 +255,10 @@ body {
 
 .access-icon::after {
   position: absolute;
-  inset: -45%;
-  background: conic-gradient(from 90deg, transparent 0 62%, rgba(255, 255, 255, 0.45) 70%, transparent 78%);
+  inset: -58%;
+  background:
+    conic-gradient(from 90deg, transparent 0 55%, rgba(255, 255, 255, 0.52) 64%, transparent 74%),
+    radial-gradient(circle at 50% 50%, rgba(147, 197, 253, 0.24), transparent 52%);
   content: "";
   opacity: 0;
   transform: rotate(0deg) scale(0.72);
@@ -264,7 +267,9 @@ body {
 
 @media (min-width: 921px) {
   .access-icon {
-    animation: access-icon-3d 4.8s ease-in-out infinite;
+    animation:
+      access-icon-3d 4.8s ease-in-out infinite,
+      access-icon-beacon 1.9s ease-in-out infinite;
   }
 
   .access-icon::before {
@@ -279,7 +284,7 @@ body {
   }
 
   .access-icon::after {
-    animation: access-icon-sweep 2.7s ease-in-out infinite;
+    animation: access-icon-sweep 2.15s linear infinite;
   }
 }
 
@@ -691,20 +696,30 @@ button[type="submit"]:active {
   }
 }
 
-@keyframes access-icon-sweep {
+@keyframes access-icon-beacon {
   0%,
-  42%,
   100% {
-    opacity: 0;
-    transform: rotate(0deg) scale(0.72);
+    filter: drop-shadow(0 0 0 rgba(96, 165, 250, 0));
   }
-  62% {
-    opacity: 0.7;
-    transform: rotate(180deg) scale(1);
+  50% {
+    filter: drop-shadow(0 0 18px rgba(96, 165, 250, 0.88));
   }
-  82% {
-    opacity: 0;
-    transform: rotate(360deg) scale(0.92);
+}
+
+@keyframes access-icon-sweep {
+  0% {
+    opacity: 0.18;
+    transform: rotate(0deg) scale(0.82);
+  }
+  35% {
+    opacity: 0.72;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.18;
+    transform: rotate(360deg) scale(0.82);
   }
 }
 
@@ -733,6 +748,8 @@ button[type="submit"]:active {
     gap: 20px;
     padding-top: 64px;
     padding-bottom: 42px;
+    padding-left: clamp(42px, 6.6vw, 128px);
+    padding-right: clamp(42px, 6.6vw, 128px);
   }
 
   .intro-panel {
@@ -809,16 +826,12 @@ button[type="submit"]:active {
 }
 
 @media (min-width: 921px) and (max-height: 690px) {
+  :root {
+    --brand-logo-height: 42px;
+  }
+
   .brand-bar {
     top: 18px;
-  }
-
-  .jakson-logo {
-    width: 112px;
-  }
-
-  .energix-logo {
-    width: 138px;
   }
 
   .pmo-login {
@@ -908,11 +921,15 @@ button[type="submit"]:active {
 }
 
 @media (min-width: 921px) and (max-width: 1280px) {
+  :root {
+    --brand-logo-height: clamp(44px, 4vw, 56px);
+  }
+
   .pmo-login {
     grid-template-columns: minmax(0, 0.95fr) minmax(360px, 500px);
     gap: 20px;
-    padding-left: clamp(34px, 4vw, 58px);
-    padding-right: clamp(34px, 4vw, 58px);
+    padding-left: clamp(34px, 5vw, 72px);
+    padding-right: clamp(34px, 5vw, 72px);
   }
 
   .intro-panel {
@@ -933,6 +950,72 @@ button[type="submit"]:active {
 
   .pmo-card {
     width: min(100%, var(--card-width));
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --card-width: 480px;
+    --control-height: 60px;
+    --brand-logo-height: clamp(72px, 3.4vw, 92px);
+  }
+
+  .pmo-login {
+    grid-template-columns: minmax(0, 1fr) minmax(440px, 560px);
+    gap: clamp(48px, 4.4vw, 96px);
+  }
+
+  .intro-panel {
+    width: min(100%, 760px);
+  }
+
+  .access-title {
+    gap: 24px;
+    margin-bottom: 34px;
+    font-size: clamp(24px, 1.2vw, 32px);
+  }
+
+  .access-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+  }
+
+  .access-icon svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .intro-panel h1 {
+    font-size: clamp(58px, 4vw, 76px);
+  }
+
+  .intro-panel p {
+    max-width: 690px;
+    font-size: 20px;
+  }
+
+  .pmo-card {
+    padding: 36px 44px 34px;
+  }
+
+  .pmo-card h2 {
+    font-size: 52px;
+  }
+
+  .login-subtitle {
+    font-size: 20px;
+  }
+
+  label,
+  .form-row a,
+  .forgot-disabled {
+    font-size: 15px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 16px;
   }
 }
 
@@ -969,6 +1052,7 @@ button[type="submit"]:active {
   :root {
     --card-width: 380px;
     --control-height: 50px;
+    --brand-logo-height: 46px;
   }
 
   .pmo-login {
@@ -1043,6 +1127,7 @@ button[type="submit"]:active {
   :root {
     --card-width: 360px;
     --control-height: 48px;
+    --brand-logo-height: 42px;
   }
 
   .pmo-login {
@@ -1062,7 +1147,8 @@ button[type="submit"]:active {
     position: fixed;
     top: 18px;
     left: 50%;
-    width: 112px;
+    width: auto;
+    height: var(--brand-logo-height);
     transform: translateX(-50%);
   }
 
@@ -1071,7 +1157,8 @@ button[type="submit"]:active {
     right: auto;
     bottom: 18px;
     left: 50%;
-    width: 130px;
+    width: auto;
+    height: var(--brand-logo-height);
     transform: translateX(-50%);
   }
 
@@ -1130,18 +1217,11 @@ button[type="submit"]:active {
   :root {
     --card-width: 330px;
     --control-height: 46px;
+    --brand-logo-height: 38px;
   }
 
   .brand-bar {
     align-items: center;
-  }
-
-  .jakson-logo {
-    width: 104px;
-  }
-
-  .energix-logo {
-    width: 120px;
   }
 
   .pmo-card {
