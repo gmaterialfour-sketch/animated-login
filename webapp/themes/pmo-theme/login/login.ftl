@@ -47,7 +47,10 @@
         <p class="login-subtitle">Hi, Welcome back</p>
 
         <#if message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>
-          <div class="alert alert-${message.type}">${kcSanitize(message.summary)?no_esc}</div>
+          <div class="alert alert-${message.type}" role="alert">
+            <strong>Access check failed</strong>
+            <span>Please check your username and password, then try again.</span>
+          </div>
         </#if>
 
         <form id="kc-form-login" action="${url.loginAction}" method="post" novalidate>
