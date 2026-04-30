@@ -54,10 +54,11 @@
   --font-heading: "Sora", "Inter", "Segoe UI", Arial, sans-serif;
   --tw-shadow-blue: 0 8px 20px rgba(59, 130, 246, 0.4);
   --tw-ring-blue: rgba(59, 130, 246, 0.24);
-  --card-width: 420px;
+  --card-width: 460px;
   --control-height: 52px;
-  --brand-logo-height: clamp(50px, 3.6vw, 74px);
-  --page-max-width: 1720px;
+  --brand-logo-height: 38px;
+  --page-max-width: 2560px;
+  --page-gutter: clamp(28px, 5vw, 112px);
 }
 
 * {
@@ -85,16 +86,33 @@ body {
 
 .pmo-login {
   position: relative;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.container {
   display: grid;
-  grid-template-columns: minmax(0, 0.96fr) minmax(380px, 520px);
+  grid-template-columns: minmax(0, 1.2fr) minmax(360px, 480px);
   align-items: center;
-  width: min(100%, var(--page-max-width));
+  justify-content: center;
+  width: 100%;
+  max-width: 1600px;
   min-height: 100vh;
   margin-inline: auto;
-  overflow: hidden;
-  gap: clamp(20px, 2.8vw, 44px);
-  padding: clamp(40px, 5vw, 76px) clamp(42px, 6.6vw, 128px);
-  isolation: isolate;
+  gap: clamp(40px, 8vw, 140px);
+  padding: 60px var(--page-gutter);
+  position: relative;
+  z-index: 1;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 30, 0.4);
+  z-index: -1;
 }
 
 .pmo-login::before {
@@ -126,17 +144,14 @@ body {
 }
 
 .loading-overlay {
-  z-index: 10;
-  display: grid;
-  place-items: center;
-  background:
-    linear-gradient(rgba(2, 6, 23, 0.72), rgba(2, 6, 23, 0.82)),
-    url("../images/login-reference.png") center / cover no-repeat;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 260ms ease, visibility 260ms ease;
+  z-index: -5;
+  display: none;
+  opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
+
+
 
 .is-ready .loading-overlay {
   opacity: 0;
@@ -144,6 +159,7 @@ body {
 }
 
 .loader-mark {
+  display: none;
   width: 44px;
   height: 44px;
   border: 3px solid rgba(255, 255, 255, 0.24);
@@ -154,7 +170,7 @@ body {
 
 .background-video {
   z-index: -3;
-  display: none;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -166,12 +182,24 @@ body {
 
 .css-bg .background-video,
 .css-bg .three-scene {
-  display: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.is-ready .three-scene {
+  opacity: 1;
 }
 
 .background-poster {
   z-index: -4;
-  background: url("../images/login-reference.png") center / cover no-repeat;
+  background:
+    radial-gradient(circle at 62% 44%, rgba(73, 123, 205, 0.24), transparent 34%),
+    radial-gradient(circle at 18% 24%, rgba(24, 83, 148, 0.34), transparent 38%),
+    linear-gradient(140deg, #031225 0%, #07172c 46%, #020617 100%);
 }
 
 .three-scene {
@@ -185,9 +213,9 @@ body {
 .background-shade {
   z-index: -1;
   background:
-    radial-gradient(circle at 76% 45%, rgba(75, 137, 255, 0.08), transparent 30%),
-    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.06), transparent 42%),
-    rgba(0, 0, 0, 0.38);
+    radial-gradient(circle at 76% 45%, rgba(75, 137, 255, 0.1), transparent 40%),
+    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.08), transparent 50%),
+    rgba(2, 6, 23, 0.3);
   backdrop-filter: blur(1px);
   -webkit-backdrop-filter: blur(1px);
   pointer-events: none;
@@ -195,29 +223,37 @@ body {
 
 .brand-bar {
   position: absolute;
-  top: clamp(30px, 3.8vh, 46px);
-  left: clamp(42px, 6.6vw, 128px);
-  right: clamp(42px, 8.6vw, 164px);
-  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 40px;
   pointer-events: none;
 }
 
-.jakson-logo {
-  width: auto;
+.brand-bar img {
+  display: block;
   height: var(--brand-logo-height);
-  max-width: min(24vw, 260px);
+  width: auto;
   object-fit: contain;
+  pointer-events: auto;
+}
+
+.jakson-logo {
+  height: calc(var(--brand-logo-height) * 1.12) !important;
+  transform: scale(1.02);
+  transform-origin: left center;
 }
 
 .energix-logo {
-  width: auto;
-  height: var(--brand-logo-height);
-  max-width: min(24vw, 260px);
-  object-fit: contain;
+  height: var(--brand-logo-height) !important;
+  transform: scale(1.02);
+  transform-origin: right center;
 }
 
 .intro-panel {
@@ -225,16 +261,24 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: min(100%, 560px);
+  width: min(100%, 640px);
   max-height: calc(100svh - 160px);
-  padding-top: clamp(28px, 6vh, 66px);
+}
+
+.login-form-wrapper {
+  margin-top: 40px;
+  padding: 32px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  backdrop-filter: blur(10px);
 }
 
 .access-title {
   display: flex;
   align-items: center;
   align-self: flex-start;
-  gap: 20px;
+  gap: 18px;
   margin-bottom: 28px;
   font-size: clamp(18px, 1.45vw, 24px);
   font-weight: 700;
@@ -244,16 +288,45 @@ body {
 
 .access-icon {
   position: relative;
-  display: grid;
-  flex: 0 0 auto;
-  width: 54px;
-  height: 54px;
-  place-items: center;
-  border-radius: 16px;
-  background: var(--blue);
-  box-shadow: 0 18px 40px rgba(47, 102, 236, 0.35);
-  overflow: hidden;
-  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #1e293b;
+  border: 1.5px solid rgba(59, 130, 246, 0.5);
+  border-radius: 14px;
+  color: #3b82f6;
+  overflow: hidden; /* Contains the lighthouse effect inside */
+  box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.3); /* Inside glow only */
+}
+
+.access-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250%; /* Large enough to sweep through the corners */
+  height: 250%;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(59, 130, 246, 0.6) 15deg, transparent 30deg);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: lighthouse-rotate 3s linear infinite;
+  pointer-events: none;
+  filter: blur(4px);
+  z-index: 0;
+}
+
+.access-icon svg {
+  position: relative;
+  z-index: 2;
+  width: 24px;
+  height: 24px;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+}
+
+@keyframes lighthouse-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .access-icon::after {
@@ -267,6 +340,17 @@ body {
   transform: rotate(0deg) scale(0.72);
   pointer-events: none;
 }
+
+
+
+
+
+
+
+
+  
+
+
 
 @media (min-width: 921px) {
   .access-icon {
@@ -302,20 +386,29 @@ body {
 .intro-panel h1 {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(30px, 10cqw, 56px);
-  line-height: 1.1;
-  font-weight: 700;
-  letter-spacing: -0.5px;
+  font-size: clamp(42px, 6vw, 88px);
+  line-height: 1.0;
+  font-weight: 800;
+  letter-spacing: -2px;
   text-wrap: balance;
+  color: #ffffff;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.access-title > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 54px;
 }
 
 .intro-panel p {
-  max-width: 520px;
-  margin: 28px 0 0;
-  color: #a1a1aa;
-  font-size: clamp(14px, 0.92vw, 16px);
-  line-height: 1.6;
+  max-width: 560px;
+  margin: clamp(14px, 2.4vh, 26px) 0 0;
+  color: rgba(238, 244, 255, 0.9);
+  font-size: clamp(14px, 1vw, 18px);
+  line-height: 1.55;
   font-weight: 400;
+  text-wrap: pretty;
 }
 
 .login-panel {
@@ -325,65 +418,57 @@ body {
   padding-top: 0;
 }
 
+
 .pmo-card {
   position: relative;
   width: min(100%, var(--card-width));
   min-height: 0;
-  padding: clamp(22px, 3.2vh, 30px) clamp(26px, 2.8vw, 34px) clamp(20px, 3vh, 28px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  padding: clamp(40px, 5.5vh, 60px) clamp(32px, 4vw, 52px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.75);
   box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.3),
-    inset 0 1px rgba(255, 255, 255, 0.15);
+    0 30px 60px -12px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(59, 130, 246, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
   text-align: center;
-  backdrop-filter: blur(16px) saturate(145%);
-  -webkit-backdrop-filter: blur(16px) saturate(145%);
-}
-
-.pmo-card::before {
-  position: absolute;
-  inset: 1px;
-  border-radius: inherit;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.035) 32%, rgba(255, 255, 255, 0)),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07), transparent 14%, transparent 86%, rgba(255, 255, 255, 0.07));
-  content: "";
-  pointer-events: none;
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
 
 .card-icon {
-  display: grid;
-  width: clamp(42px, 4.8vh, 48px);
-  height: clamp(42px, 4.8vh, 48px);
-  margin: 0 auto clamp(16px, 2.3vh, 22px);
-  place-items: center;
-  border: 1px solid rgba(120, 170, 255, 0.58);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 24px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1.5px solid rgba(59, 130, 246, 0.3);
   border-radius: 14px;
-  background: rgba(59, 130, 246, 0.18);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  color: #3b82f6;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
 }
 
 .card-icon svg {
   width: 24px;
   height: 24px;
-  fill: #64a4ff;
 }
 
 .pmo-card h2 {
   margin: 0;
   font-family: var(--font-heading);
-  font-size: clamp(30px, 2.6vw, 42px);
-  line-height: 1.2;
+  font-size: clamp(28px, 2.2vw, 34px);
+  line-height: 1.1;
   font-weight: 700;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.6px;
+  color: #ffffff;
 }
 
 .login-subtitle {
-  margin: 8px 0 clamp(20px, 3vh, 28px);
-  color: var(--muted);
-  font-size: 17px;
+  margin: 8px 0 clamp(24px, 4vh, 32px);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
   font-weight: 400;
 }
 
@@ -392,56 +477,21 @@ body {
   gap: 4px;
   margin-bottom: 20px;
   padding: 12px 14px;
-  border: 1px solid rgba(255, 117, 117, 0.38);
+  border: 1px solid rgba(255, 117, 117, 0.3);
   border-radius: 12px;
   color: #ffe7e7;
-  background:
-    linear-gradient(135deg, rgba(255, 95, 109, 0.2), rgba(59, 130, 246, 0.1)),
-    rgba(14, 23, 42, 0.74);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  background: rgba(255, 95, 109, 0.1);
   text-align: left;
-}
-
-.alert strong {
-  font-size: 13px;
-  line-height: 1.2;
-}
-
-.alert span {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-form {
-  text-align: left;
-}
-
-.field-group {
-  margin-bottom: clamp(16px, 2.6vh, 22px);
-}
-
-.field-group.is-invalid .input-shell {
-  border-color: rgba(255, 95, 109, 0.92);
-  box-shadow:
-    0 0 0 3px rgba(255, 95, 109, 0.16),
-    0 14px 30px rgba(0, 0, 0, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
-}
-
-.field-group.is-invalid .field-error {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 label {
   display: block;
-  margin: 0 0 12px;
-  color: rgba(238, 244, 255, 0.82);
+  text-align: left;
+  margin: 0 0 10px 4px;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0;
-  text-transform: none;
+  font-weight: 500;
+  letter-spacing: 0.2px;
 }
 
 .input-shell {
@@ -449,85 +499,88 @@ label {
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: var(--control-height);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 13px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.09)),
-    var(--input-bg);
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.2),
-    inset 0 1px rgba(255, 255, 255, 0.22),
-    inset 0 -1px rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(14px) saturate(150%);
-  -webkit-backdrop-filter: blur(14px) saturate(150%);
-  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease, transform 180ms ease;
+  height: var(--control-height);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 260ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-shell:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .input-shell:focus-within {
-  border-color: rgba(147, 197, 253, 0.9);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.13)),
-    rgba(255, 255, 255, 0.16);
-  box-shadow:
-    0 0 0 4px var(--tw-ring-blue),
-    0 18px 36px rgba(16, 45, 94, 0.28),
-    0 0 30px rgba(59, 130, 246, 0.18),
-    inset 0 1px rgba(255, 255, 255, 0.36);
-  transform: translateY(-1px);
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 .input-icon {
-  display: grid;
-  width: 52px;
-  min-width: 52px;
-  place-items: center;
-  color: rgba(235, 244, 255, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 240ms ease;
+}
+
+.input-shell:focus-within .input-icon {
+  color: var(--blue-strong);
 }
 
 .input-icon svg,
 .password-toggle svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 input[type="text"],
 input[type="password"] {
-  width: 100%;
-  min-width: 0;
-  height: calc(var(--control-height) - 2px);
+  flex: 1;
+  height: 100%;
+  padding-right: 16px;
   border: 0;
   color: var(--input-text);
-  font: 400 14px/1 var(--font-main);
+  font: 400 15px/1 var(--font-main);
   background: transparent;
   outline: 0;
 }
 
+.field-group .input-icon + input {
+  padding-left: 0;
+}
+
 input::placeholder {
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.3);
   opacity: 1;
 }
 
 .password-toggle {
-  display: grid;
-  width: 48px;
-  min-width: 48px;
-  height: 48px;
-  margin-right: 6px;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 100%;
+  margin-right: 4px;
   border: 0;
   border-radius: 10px;
-  color: rgba(235, 244, 255, 0.82);
+  color: rgba(255, 255, 255, 0.35);
   background: transparent;
-  box-shadow: none;
   cursor: pointer;
-  transition: color 180ms ease, background 180ms ease;
+  transition: all 240ms ease;
 }
 
 .password-toggle:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .password-toggle .eye-closed,
@@ -631,7 +684,7 @@ button[type="submit"]:active {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   margin-top: clamp(20px, 3vh, 28px);
   color: rgba(232, 238, 248, 0.76);
   font-size: 11px;
@@ -644,7 +697,8 @@ button[type="submit"]:active {
   display: block;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(94, 151, 255, 0.62));
-  animation: divider-open-close 2.8s ease-in-out infinite;
+  animation: none;
+  transform: none;
   transform-origin: right center;
 }
 
@@ -665,6 +719,16 @@ button[type="submit"]:active {
 
 .is-ready .pmo-card {
   animation-delay: 90ms;
+}
+
+@keyframes icon-pulse-glow {
+  0% { transform: scale(1); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 8px 30px rgba(59, 130, 246, 0.4); border-color: rgba(59, 130, 246, 0.6); }
+  100% { transform: scale(1); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2); }
+}
+
+.animated-icon {
+  animation: icon-pulse-glow 3s ease-in-out infinite;
 }
 
 @keyframes rise-in {
@@ -745,8 +809,19 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (min-width: 1200px) and (max-width: 1799px) and (max-height: 820px) {
-  .pmo-login {
+  .container {
     grid-template-columns: minmax(0, 0.96fr) minmax(380px, 500px);
     gap: 20px;
     padding-top: 64px;
@@ -828,6 +903,17 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (min-width: 921px) and (max-width: 1799px) and (max-height: 690px) {
   :root {
     --brand-logo-height: 42px;
@@ -837,7 +923,7 @@ button[type="submit"]:active {
     top: 18px;
   }
 
-  .pmo-login {
+  .container {
     padding-top: 48px;
     padding-bottom: 16px;
   }
@@ -923,12 +1009,23 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (min-width: 921px) and (max-width: 1280px) {
   :root {
     --brand-logo-height: clamp(44px, 4vw, 56px);
   }
 
-  .pmo-login {
+  .container {
     grid-template-columns: minmax(0, 0.95fr) minmax(360px, 500px);
     gap: 20px;
     padding-left: clamp(34px, 5vw, 72px);
@@ -956,31 +1053,38 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (min-width: 1800px) {
   :root {
-    --card-width: 500px;
-    --control-height: 62px;
-    --brand-logo-height: clamp(70px, 3vw, 86px);
-    --page-max-width: 1680px;
+    --card-width: 560px;
+    --control-height: 66px;
+    --brand-logo-height: clamp(70px, 3.2vw, 94px);
+    --page-max-width: 2240px;
   }
 
-  .pmo-login {
-    grid-template-columns: minmax(620px, 760px) minmax(460px, 540px);
-    gap: clamp(64px, 5vw, 120px);
+  .container {
+    grid-template-columns: minmax(700px, 980px) minmax(520px, 620px);
+    gap: clamp(80px, 7vw, 180px);
     padding-top: clamp(72px, 5vh, 96px);
     padding-bottom: clamp(52px, 5vh, 86px);
-    padding-left: clamp(76px, 5vw, 112px);
-    padding-right: clamp(76px, 5vw, 112px);
+    padding-left: clamp(90px, 5vw, 144px);
+    padding-right: clamp(90px, 5vw, 144px);
   }
 
-  .brand-bar {
-    top: clamp(34px, 3.6vh, 56px);
-    left: clamp(76px, 5vw, 112px);
-    right: clamp(76px, 5vw, 112px);
-  }
+
 
   .intro-panel {
-    width: min(100%, 720px);
+    width: min(100%, 920px);
     padding-top: 0;
   }
 
@@ -996,30 +1100,34 @@ button[type="submit"]:active {
     border-radius: 20px;
   }
 
+  .access-title > span:last-child {
+    min-height: 68px;
+  }
+
   .access-icon svg {
     width: 34px;
     height: 34px;
   }
 
   .intro-panel h1 {
-    font-size: clamp(56px, 3.3vw, 72px);
+    font-size: clamp(72px, 4.2vw, 108px);
   }
 
   .intro-panel p {
-    max-width: 640px;
-    font-size: 18px;
+    max-width: 760px;
+    font-size: clamp(18px, 1vw, 24px);
   }
 
   .pmo-card {
-    padding: 34px 42px 32px;
+    padding: 44px 52px 40px;
   }
 
   .pmo-card h2 {
-    font-size: 50px;
+    font-size: clamp(50px, 2.7vw, 70px);
   }
 
   .login-subtitle {
-    font-size: 20px;
+    font-size: clamp(18px, 1vw, 24px);
   }
 
   label,
@@ -1034,8 +1142,19 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (max-width: 1100px) {
-  .pmo-login {
+  .container {
     grid-template-columns: minmax(0, 0.94fr) minmax(360px, 500px);
     gap: 18px;
     padding-top: 130px;
@@ -1063,27 +1182,63 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (max-width: 920px) {
   :root {
     --card-width: 380px;
     --control-height: 50px;
-    --brand-logo-height: 46px;
+    --brand-logo-height: 32px;
   }
 
-  .pmo-login {
+  .container {
     grid-template-columns: 1fr;
     place-items: center;
     gap: 12px;
     min-height: 100svh;
-    padding: 84px 22px 18px;
+    padding: 132px 22px 32px;
     text-align: center;
   }
 
   .brand-bar {
-    top: 24px;
-    left: 18px;
-    right: 18px;
+    position: static;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .brand-bar img {
+    position: fixed;
+    z-index: 100;
+  }
+
+  .jakson-logo {
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) scale(1.02);
+  }
+
+  .energix-logo {
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) scale(1.02);
+
+    justify-content: center;
+
+
+
+
   }
 
   .intro-panel {
@@ -1108,6 +1263,10 @@ button[type="submit"]:active {
     height: 32px;
     border-radius: 10px;
     animation: access-icon-beacon 2.4s ease-in-out infinite;
+  }
+
+  .access-title > span:last-child {
+    min-height: 32px;
   }
 
   .access-icon svg {
@@ -1145,6 +1304,150 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
+@media (max-width: 768px) {
+  :root {
+    --card-width: 380px;
+    --control-height: 48px;
+    --brand-logo-height: 38px;
+  }
+
+  .container {
+    display: flex;
+    min-height: 100svh;
+    align-items: center;
+    justify-content: center;
+    padding: 132px 18px 48px;
+  }
+
+  .intro-panel {
+    display: none;
+  }
+
+  .login-panel {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pmo-card {
+    width: min(100%, var(--card-width));
+    padding: 18px 16px 16px;
+    border-radius: 16px;
+  }
+
+  .background-video {
+    opacity: 0.72;
+  }
+
+  .three-scene,
+  canvas {
+    display: none;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 17px;
+  }
+}
+
+
+
+
+
+
+
+
+  
+
+
+
+@media (min-width: 2400px) {
+  :root {
+    --card-width: 620px;
+    --control-height: 74px;
+    --brand-logo-height: clamp(82px, 3.2vw, 116px);
+    --page-max-width: 2460px;
+  }
+
+  .container {
+    grid-template-columns: minmax(860px, 1120px) minmax(580px, 700px);
+    gap: clamp(110px, 7vw, 220px);
+    padding-inline: clamp(120px, 5.2vw, 180px);
+  }
+
+  .brand-bar {
+    left: clamp(120px, 5.2vw, 180px);
+    right: clamp(120px, 5.2vw, 180px);
+  }
+
+  .intro-panel {
+    width: min(100%, 1080px);
+  }
+
+  .access-title {
+    font-size: clamp(28px, 1.2vw, 34px);
+  }
+
+  .access-icon {
+    width: 78px;
+    height: 78px;
+  }
+
+  .access-title > span:last-child {
+    min-height: 78px;
+  }
+
+  .intro-panel h1 {
+    font-size: clamp(92px, 4.4vw, 124px);
+  }
+
+  .intro-panel p {
+    max-width: 860px;
+    font-size: clamp(22px, 1.05vw, 28px);
+  }
+
+  .pmo-card {
+    padding: 52px 58px 48px;
+  }
+
+  .card-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  label,
+  .form-row a,
+  .forgot-disabled {
+    font-size: 16px;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    font-size: 18px;
+  }
+}
+
+
+
+
+
+
+
+
+  
+
+
+
 @media (max-width: 720px) {
   :root {
     --card-width: 360px;
@@ -1152,36 +1455,10 @@ button[type="submit"]:active {
     --brand-logo-height: 42px;
   }
 
-  .pmo-login {
+  .container {
     min-height: 100svh;
     gap: 8px;
-    padding: 68px 16px 66px;
-  }
-
-  .brand-bar {
-    position: fixed;
-    inset: 18px 16px auto;
-    display: block;
-    height: 0;
-  }
-
-  .jakson-logo {
-    position: fixed;
-    top: 18px;
-    left: 50%;
-    width: auto;
-    height: var(--brand-logo-height);
-    transform: translateX(-50%);
-  }
-
-  .energix-logo {
-    position: fixed;
-    right: auto;
-    bottom: 18px;
-    left: 50%;
-    width: auto;
-    height: var(--brand-logo-height);
-    transform: translateX(-50%);
+    padding: 132px 16px 40px;
   }
 
   .pmo-card {
@@ -1189,6 +1466,7 @@ button[type="submit"]:active {
     padding: 16px 16px 15px;
     border-radius: 20px;
     max-width: 100%;
+    background: rgba(10, 20, 38, 0.9);
   }
 
   .card-icon {
@@ -1235,6 +1513,17 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (max-width: 430px) {
   :root {
     --card-width: 330px;
@@ -1272,10 +1561,21 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (max-width: 430px) and (max-height: 740px) {
-  .pmo-login {
-    padding-top: 58px;
-    padding-bottom: 56px;
+  .container {
+    padding-top: 132px;
+    padding-bottom: 40px;
     gap: 6px;
   }
 
@@ -1305,6 +1605,17 @@ button[type="submit"]:active {
   }
 }
 
+
+
+
+
+
+
+
+  
+
+
+
 @media (max-width: 380px) {
   :root {
     --card-width: 310px;
@@ -1312,7 +1623,7 @@ button[type="submit"]:active {
     --brand-logo-height: 34px;
   }
 
-  .pmo-login {
+  .container {
     padding-inline: 12px;
   }
 
@@ -1340,5 +1651,23 @@ button[type="submit"]:active {
   html,
   body {
     overflow-x: hidden;
+  }
+}
+
+
+
+
+
+
+
+
+  
+
+
+
+@media (max-width: 1200px) {
+  .container {
+    padding-top: 160px !important;
+    padding-bottom: 120px !important;
   }
 }
