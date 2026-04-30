@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function shouldUseLiteMode() {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  return reducedMotion || isSlowNetwork();
+  return reducedMotion;
 }
 
 function isSlowNetwork() {
@@ -31,6 +31,7 @@ function initNetworkMode() {
   }
 
   document.body.classList.add("slow-network");
+  stopBackgroundVideo();
 
   const href = new URL("../css/slow-network.css", import.meta.url).href;
   if (!document.querySelector(`link[href="${href}"]`)) {
@@ -42,6 +43,12 @@ function initNetworkMode() {
 }
 
 async function initBackgroundMode() {
+  if (document.body.classList.contains("slow-network")) {
+    document.body.classList.add("poster-bg");
+    document.body.classList.remove("video-bg", "css-bg");
+    return;
+  }
+
   const liteMode = shouldUseLiteMode();
   document.body.classList.toggle("css-bg", liteMode);
   document.body.classList.toggle("video-bg", !liteMode);
